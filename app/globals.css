@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+input::placeholder {
+  color: #2d2d2d;
+}
+
+input {
+  outline: none;
+}
+
+.input-hover {
+  border-radius: 8px;
+  border-bottom: 2px solid #b5d779;
+  background: #f5f5f5;
+}
+
+.input-add-on {
+  right: 16px;
+  top: 12px;
+}
+
+.custom-radio input:checked {
+  background-color: #ff0000;
+}
+
+.stepShadow-1 {
+  background: linear-gradient(90deg, #daff98 0%, rgba(218, 255, 152, 0) 35.42%);
+}
+.stepShadow-2 {
+  background: linear-gradient(90deg, #daff98 0%, rgba(218, 255, 152, 0) 73.44%);
+}
+
+.stepLine-1 {
+  background: linear-gradient(90deg, #9bcb46 0%, #f5f5f5 49.92%, #f5f5f5 100%);
+}
+
+.stepLine-2 {
+  background: linear-gradient(90deg, #9bcb46 0%, #f5f5f5 80.21%, #f5f5f5 100%);
+}
+
+.shake {
+  animation: shakeAnimation 0.4s ease-in-out;
+}
+
+@keyframes shakeAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-10px);
+  }
+
+  40% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+.sidebar {
+  transform: translateX(-100%);
+  animation: slide-in-out 0.5s ease-in-out forwards;
+}
+
+.sidebar.open {
+  animation-name: slide-in-out;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slide-in-out {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
