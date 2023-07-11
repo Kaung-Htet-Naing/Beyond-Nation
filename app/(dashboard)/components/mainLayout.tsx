@@ -11,6 +11,7 @@ import {
 	User,
 	navigation,
 } from "@utils/menuList";
+import { usePathname } from "next/navigation";
 
 interface MainLayoutProps {
 	children: ReactNode;
@@ -20,6 +21,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [mobileSideBar, setMoibleSideBar] = useState(true);
 	const [userOpen, setUserOpen] = useState(false);
+	const pathname = usePathname();
+
 	return (
 		<>
 			<div>
@@ -105,7 +108,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 																<a
 																	href={item.href}
 																	className={classNames(
-																		item.current
+																		pathname == item.href
 																			? "bg-[#EAEAEA] text-primary-color"
 																			: "text-gray-700 hover:text-primary-color hover:bg-[#EAEAEA]",
 																		"group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -161,7 +164,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 												<a
 													href={item.href}
 													className={classNames(
-														item.current
+														pathname == item.href
 															? "bg-[#EAEAEA] text-primary-color"
 															: "text-gray-700 hover:text-primary-color hover:bg-[#EAEAEA]",
 														mobileSideBar

@@ -499,7 +499,12 @@ export const SettingIcon = (props: any) => {
 
 export const navigation = [
 	{ name: "Dashboard", href: "#", icon: <HomeIcon />, current: false },
-	{ name: "E-commerce", href: "/quote", icon: <Shopping />, current: true },
+	{
+		name: "E-commerce",
+		href: "/e-commerce",
+		icon: <Shopping />,
+		current: true,
+	},
 	{
 		name: "Magazine",
 		href: "#",
@@ -509,7 +514,7 @@ export const navigation = [
 	},
 	{
 		name: "Custom Pages",
-		href: "custom-pages",
+		href: "/custom-pages",
 		icon: <File />,
 		current: false,
 	},
