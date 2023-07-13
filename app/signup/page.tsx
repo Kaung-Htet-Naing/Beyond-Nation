@@ -3,7 +3,8 @@
 import Input from "@components/Input";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { GoogleLogo } from "@utils/SvgLogo";
 
 export default function Home() {
 	return (
@@ -50,14 +51,21 @@ export default function Home() {
 						/>
 					</div>
 				</div>
-
 				<button
 					type="submit"
-					className="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-primary/70"
+					className="flex w-full mb-5 justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-primary/70"
 				>
 					Sign In
 				</button>
 			</form>
+			<button
+				type="submit"
+				className="flex w-full justify-center rounded-md gap-5  bg-gray-200 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-300"
+				onClick={() => signIn("google")}
+			>
+				<GoogleLogo />
+				<div>Sign in with Google</div>
+			</button>
 			<div className="relative mt-5">
 				<div className="absolute inset-0 flex items-center" aria-hidden="true">
 					<div className="w-full border-t border-gray-200" />
