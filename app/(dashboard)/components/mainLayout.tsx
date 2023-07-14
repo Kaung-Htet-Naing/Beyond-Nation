@@ -12,6 +12,7 @@ import {
 	navigation,
 } from "@utils/menuList";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 interface MainLayoutProps {
 	children: ReactNode;
@@ -322,7 +323,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
 											</div>
 										</div>
 										<div className="p-2 text-sm ">
-											<div className="flex flex-row items-center p-1 gap-x-2">
+											<div
+												className="flex flex-row items-center p-1 cursor-pointer gap-x-2"
+												onClick={() => signOut()}
+											>
 												<Logout />
 												<p>Logout</p>
 											</div>

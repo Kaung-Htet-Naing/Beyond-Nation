@@ -33,7 +33,8 @@
 		"**/*.ts",
 		"**/*.tsx",
 		".next/types/**/*.ts",
-		"app/form/Context"
+		"app/form/Context",
+		"app/api/auth/[...nextauth]/route.ts"
 	],
 	"exclude": ["node_modules"]
 }
