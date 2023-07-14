@@ -13,7 +13,7 @@ const AuthRedireact = (props: Props) => {
 
 	if (status === "authenticated") {
 		router.replace("/e-commerce");
-	} else router.replace("/signup");
+	}
 
 	return <div>{props.children}</div>;
 };

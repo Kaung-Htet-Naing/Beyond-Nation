@@ -1,11 +1,10 @@
-export const GoogleLogo = (props) => (
+export const GoogleLogo = () => (
 	<svg
 		width="20"
 		height="20"
 		viewBox="0 0 775 794"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
-		{...props}
 	>
 		<path
 			d="M775 405.797C775 373.248 772.362 349.496 766.653 324.865H395.408V471.773H613.32C608.929 508.282 585.204 563.264 532.482 600.209L531.743 605.127L649.124 696.166L657.256 696.979C731.943 627.921 775 526.315 775 405.797"
