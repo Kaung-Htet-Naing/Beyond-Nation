@@ -1,12 +1,72 @@
 "use client";
 
 import Input from "@components/Input";
-import Image from "next/image";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { GoogleLogo } from "@utils/SvgLogo";
+import { getRedirectResult, signInWithRedirect } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { auth, provider } from "@lib/firebase-config";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Home() {
+	const router = useRouter();
+	const [email, setEmail] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+	const [invalidEmail, setInvalidEmail] = useState<string>("");
+	const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		const auth = getAuth();
+		await signInWithEmailAndPassword(auth, email, password)
+			.then(async (userCredential) => {
+				const user = userCredential.user;
+				const accessToken = await user.getIdToken();
+
+				fetch("http://localhost:3000/api/login", {
+					method: "POST",
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				})
+					.then((response) => {
+						if (response.status === 200) {
+							router.push("/e-commerce");
+						}
+					})
+					.catch((error) => console.log("error"));
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const cleanErrorMessage = errorCode.replace("auth/", "");
+				setInvalidEmail(cleanErrorMessage);
+			});
+	};
+
+	useEffect(() => {
+		getRedirectResult(auth).then(async (userCred) => {
+			if (!userCred) {
+				return;
+			}
+
+			fetch("http://localhost:3000/api/login", {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${await userCred.user.getIdToken()}`,
+				},
+			})
+				.then((response) => {
+					if (response.status === 200) {
+						router.push("/e-commerce");
+					}
+				})
+				.catch((error) => console.log("error"));
+		});
+	}, []);
+
+	function signIn() {
+		signInWithRedirect(auth, provider);
+	}
+
 	return (
 		<>
 			<form>
@@ -26,11 +86,11 @@ export default function Home() {
 					</label>
 					<div className="mt-2">
 						<Input
-							errors={""}
-							register={""}
 							name="phone"
-							placeholder="test@company.com"
+							placeholder="test@gmail.com"
 							type="text"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
 				</div>
@@ -43,15 +103,17 @@ export default function Home() {
 					</label>
 					<div className="mt-2">
 						<Input
-							errors={""}
-							register={""}
-							name="email"
+							name="password"
 							placeholder="password"
 							type="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 					</div>
+					{invalidEmail && <p className="pt-2 text-red-800">{invalidEmail}</p>}
 				</div>
 				<button
+					onClick={handleSignUp}
 					type="submit"
 					className="flex w-full mb-5 justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-primary/70"
 				>
@@ -61,7 +123,7 @@ export default function Home() {
 			<button
 				type="submit"
 				className="flex w-full justify-center rounded-md gap-5  bg-gray-200 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-300"
-				onClick={() => signIn("google")}
+				onClick={() => signIn()}
 			>
 				<GoogleLogo />
 				<div>Sign in with Google</div>

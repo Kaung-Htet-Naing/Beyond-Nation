@@ -25,7 +25,9 @@
 			"@hooks/*": ["./hooks/*"],
 			"@core/*": ["./core/*"],
 			"@public/*": ["./public/*"],
-			"@utils/*": ["./utils/*"]
+			"@utils/*": ["./utils/*"],
+			"@context/*": ["./context/*"],
+			"@lib/*": ["./lib/*"]
 		}
 	},
 	"include": [
