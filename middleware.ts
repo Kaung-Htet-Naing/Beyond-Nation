@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 
 	//Return to /login if don't have a session
 	if (!session && path !== "/login" && path !== "/signup") {
-		return NextResponse.redirect(new URL("/signup", request.url));
+		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
 	const responseAPI = await fetch("http://localhost:3000/api/login", {
@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 	});
 
 	if (responseAPI.status !== 200 && path !== "/login" && path !== "/signup") {
-		return NextResponse.redirect(new URL("/signup", request.url));
+		return NextResponse.redirect(new URL("/login", request.url));
 	}
 	if (
 		responseAPI.status == 200 &&

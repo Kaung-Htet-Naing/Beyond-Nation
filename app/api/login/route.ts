@@ -24,7 +24,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
 				httpOnly: true,
 				secure: true,
 			};
-
 			cookies().set(options);
 		}
 	}

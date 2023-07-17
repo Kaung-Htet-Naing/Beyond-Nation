@@ -2,11 +2,8 @@
 
 import Input from "@components/Input";
 import Link from "next/link";
-import { GoogleLogo } from "@utils/SvgLogo";
-import { getRedirectResult, signInWithRedirect } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { auth, provider } from "@lib/firebase-config";
+import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Home() {
@@ -14,7 +11,8 @@ export default function Home() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [invalidEmail, setInvalidEmail] = useState<string>("");
-	const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
+	const handleSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		const auth = getAuth();
 		await signInWithEmailAndPassword(auth, email, password)
@@ -41,31 +39,6 @@ export default function Home() {
 				setInvalidEmail(cleanErrorMessage);
 			});
 	};
-
-	useEffect(() => {
-		getRedirectResult(auth).then(async (userCred) => {
-			if (!userCred) {
-				return;
-			}
-
-			fetch("http://localhost:3000/api/login", {
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${await userCred.user.getIdToken()}`,
-				},
-			})
-				.then((response) => {
-					if (response.status === 200) {
-						router.push("/e-commerce");
-					}
-				})
-				.catch((error) => console.log("error"));
-		});
-	}, []);
-
-	function signIn() {
-		signInWithRedirect(auth, provider);
-	}
 
 	return (
 		<>
@@ -112,36 +85,21 @@ export default function Home() {
 					</div>
 					{invalidEmail && <p className="pt-2 text-red-800">{invalidEmail}</p>}
 				</div>
+				<div className="flex flex-row justify-between mb-5">
+					<div className="inline-flex flex-row gap-x-2">
+						<input type="checkbox" />
+						<p>Remember Me</p>
+					</div>
+					<p className="text-sm">Forget Password?</p>
+				</div>
 				<button
-					onClick={handleSignUp}
+					onClick={handleSignIn}
 					type="submit"
-					className="flex w-full mb-5 justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-primary/70"
+					className="flex w-full  justify-center rounded-md bg-[#333333] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary/70"
 				>
 					Sign In
 				</button>
 			</form>
-			<button
-				type="submit"
-				className="flex w-full justify-center rounded-md gap-5  bg-gray-200 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-300"
-				onClick={() => signIn()}
-			>
-				<GoogleLogo />
-				<div>Sign in with Google</div>
-			</button>
-			<div className="relative mt-5">
-				<div className="absolute inset-0 flex items-center" aria-hidden="true">
-					<div className="w-full border-t border-gray-200" />
-				</div>
-				<div className="relative flex justify-center text-sm font-medium leading-6">
-					<span className="px-6 text-gray-900 bg-white">or</span>
-				</div>
-			</div>
-			<Link
-				href="/signup/phone"
-				className="flex justify-center w-full gap-2 py-2 mt-4 mb-2 font-semibold text-black bg-transparent border rounded-md "
-			>
-				Sign Up
-			</Link>
 		</>
 	);
 }
