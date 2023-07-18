@@ -6,7 +6,12 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 	const path = request.nextUrl.pathname;
 
 	//Return to /login if don't have a session
-	if (!session && path !== "/login" && path !== "/signup") {
+	if (
+		!session &&
+		path !== "/login" &&
+		path !== "/signup" &&
+		path !== "/password-reset"
+	) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
 
@@ -16,12 +21,17 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 		},
 	});
 
-	if (responseAPI.status !== 200 && path !== "/login" && path !== "/signup") {
+	if (
+		responseAPI.status !== 200 &&
+		path !== "/login" &&
+		path !== "/signup" &&
+		path !== "/password-reset"
+	) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
 	if (
 		responseAPI.status == 200 &&
-		(path === "/signup" || path === "/signup" || path === "/")
+		(path === "/signup" || path === "/login" || path === "/")
 	) {
 		return NextResponse.redirect(new URL("/e-commerce", request.url));
 	}
