@@ -35,7 +35,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 		});
 
 		if (response.status === 200) {
-			router.push("/signup");
+			router.push("/login");
 		}
 	}
 	return (

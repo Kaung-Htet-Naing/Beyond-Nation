@@ -43,9 +43,6 @@ export default function Home() {
 	return (
 		<>
 			<form>
-				<h1 className="mb-1 text-3xl text-center text-gray-900">
-					BEYOUND NATIONS
-				</h1>
 				<p className="text-sm font-normal text-center text-gray-600 mb-7">
 					Please Sign in a account
 				</p>
@@ -90,7 +87,9 @@ export default function Home() {
 						<input type="checkbox" />
 						<p>Remember Me</p>
 					</div>
-					<p className="text-sm">Forget Password?</p>
+					<Link className="text-sm" href="password-reset">
+						Forget Password?
+					</Link>
 				</div>
 				<button
 					onClick={handleSignIn}
