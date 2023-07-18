@@ -11,8 +11,9 @@ import {
 	User,
 	navigation,
 } from "@utils/menuList";
-import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@lib/firebase-config";
 
 interface MainLayoutProps {
 	children: ReactNode;
@@ -23,7 +24,20 @@ export default function MainLayout({ children }: MainLayoutProps) {
 	const [mobileSideBar, setMoibleSideBar] = useState(true);
 	const [userOpen, setUserOpen] = useState(false);
 	const pathname = usePathname();
+	const router = useRouter();
+	async function signOutUser() {
+		//Sign out with the Firebase client
+		await signOut(auth);
 
+		//Clear the cookies in the server
+		const response = await fetch("http://localhost:3000/api/signOut", {
+			method: "POST",
+		});
+
+		if (response.status === 200) {
+			router.push("/signup");
+		}
+	}
 	return (
 		<>
 			<div>
@@ -252,13 +266,62 @@ export default function MainLayout({ children }: MainLayoutProps) {
 							src="/icons/message.png"
 							alt="Your Company"
 						/>
-						<Image
-							width="24"
-							height="24"
-							className="w-auto h-8"
-							src="/icons/profile-user.png"
-							alt="Your Company"
-						/>
+						<div className="relative">
+							<Image
+								width="24"
+								height="24"
+								className="w-auto h-8"
+								src="/icons/profile-user.png"
+								alt="Your Company"
+								onClick={() => setUserOpen((prev) => !prev)}
+							/>
+							{userOpen && (
+								<div className="absolute z-10 w-40 mr-10 bg-white border border-gray-200 rounded-md shadow-md top-10 -right-10">
+									<div className="flex flex-row p-2 gap-x-4">
+										<Image
+											width="24"
+											height="24"
+											className="w-auto h-8"
+											src="/icons/profile-user.png"
+											alt="Your Company"
+										/>
+										<div className="text-[0.7rem]">
+											<p className="font-semibold">John Doe</p>
+											<p>Admin</p>
+										</div>
+									</div>
+									<div className="p-2 text-sm border-t margin-gray-200">
+										<div className="flex flex-row items-center p-1 gap-x-2">
+											<User />
+											<p>Profile</p>
+										</div>
+										<div className="flex flex-row items-center p-1 gap-x-2">
+											<MissionControl width={15} height={15} />
+											<p>Mission Control</p>
+										</div>
+										<div className="flex flex-row items-center p-1 gap-x-2">
+											<Message />
+											<p>Messages</p>
+										</div>
+									</div>
+									<div className="p-2 text-sm border-y margin-gray-200">
+										<div className="flex flex-row items-center p-1 gap-x-2">
+											<Help />
+											<p>Help</p>
+										</div>
+									</div>
+									<div className="p-2 text-sm ">
+										<div
+											className="flex flex-row items-center p-1 cursor-pointer gap-x-2"
+											onClick={() => signOutUser()}
+										>
+											<Logout />
+											<p>Logout</p>
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 				<main className={classNames(mobileSideBar ? "lg:pl-72" : "lg:pl-24")}>
@@ -325,7 +388,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 										<div className="p-2 text-sm ">
 											<div
 												className="flex flex-row items-center p-1 cursor-pointer gap-x-2"
-												onClick={() => signOut()}
+												onClick={() => signOutUser()}
 											>
 												<Logout />
 												<p>Logout</p>
